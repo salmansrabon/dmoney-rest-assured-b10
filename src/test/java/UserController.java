@@ -3,27 +3,17 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
-import org.junit.jupiter.api.Test;
+import org.testng.annotations.Test;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Properties;
 
 import static io.restassured.RestAssured.given;
 
-public class MyAPICalling {
-    Properties prop;
-    FileInputStream file;
-
-    public void loadConfigData() throws IOException {
-        prop=new Properties();
-        file=new FileInputStream("./src/test/resources/config.properties");
-        prop.load(file);
+public class UserController extends Setup {
+    public UserController() throws IOException {
+        intiConfig();
     }
-    @Test
     public void doLogin() throws ConfigurationException, IOException {
-        loadConfigData();
         RestAssured.baseURI= prop.getProperty("baseUrl");
         Response res= given().contentType("application/json").body("{\n" +
                 "    \"email\":\"salman@roadtocareer.net\",\n" +
@@ -36,7 +26,13 @@ public class MyAPICalling {
         String token= jsonObj.get("token");
         System.out.println(token);
         setEnvVar("token",token);
-
+    }
+    public void searchUser(){
+        RestAssured.baseURI= prop.getProperty("baseUrl");
+        Response res= given().contentType("application/json")
+                .header("Authorization",prop.getProperty("token"))
+                        .when().get("/user/search/id/1");
+        System.out.println(res.asString());
     }
     public static void setEnvVar(String key, String value) throws ConfigurationException {
         PropertiesConfiguration config=new PropertiesConfiguration("./src/test/resources/config.properties");
