@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<suite name="dmoney Rest Assured Automation">
+    <test name="User registration automation">
+        <classes>
+            <class name="TestRunner">
+            </class>
+        </classes>
+    </test>
+</suite>
