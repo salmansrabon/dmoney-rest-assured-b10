@@ -15,5 +15,4 @@ jobs:
 
     - name: Build with Gradle Wrapper
       run: |
-        ./gradlew build
-        ./gradlew clean test
+        gradle clean test
